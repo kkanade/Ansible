@@ -71,3 +71,84 @@
     replace:
       dest: "/home/ketan/ansible.txt"
       regexp: "table"
+
+  - name: Ansible check file exists example.
+    stat:
+      path: /home/ketan/ansible.txt
+    register: file_details
+
+  - debug:
+      msg: " The file or directory exists "
+    when: file_details.stat.exists
+
+  - debug:
+      msg: " The file or directory exists "
+    when: file_details.stat.exists and file_details.stat.isreg
+
+  - debug:
+      msg: " The file or directory exists "
+    when: file_details.stat.exists and file_details.stat.isdir == false and file_details.stat.islnk == false
+
+  - name: Ansible check directory exists example.
+    stat:
+      path: /home/ketan/google
+    register: files_to_delete
+
+  - debug:
+      msg: "It is a directory"
+    when: files_to_delete.stat.exists and files_to_delete.stat.isdir
+
+  - name: ansible create directory example
+    file:
+      path: /home/ketan/google
+      state: directory
+
+  - name: ansible create directory with mode setting example
+    file:
+      path: /home/ketan/google
+      state: directory
+      mode: "u=rw,g=wx,o=rwx"
+
+  - name: ansible set permission recursvely for a directory
+    file:
+      path: /home/ketan/google
+      state: directory
+      mode: "u=rw,g=wx,o=rwx"
+      recurse: yes
+
+  - name: ansible create multiple directory example
+    file:
+      path: "{{ item }}"
+      state: directory
+    with_items:
+      - '/home/ketan/google1'
+      - '/home/ketan/google2'
+      - '/home/ketan/google3'
+
+  - name: ansible create directory with_items example
+    file:
+      path: "{{ item.dest }}"
+      mode: "{{item.mode}}"
+      state: directory
+    with_items:
+      - { dest: '/home/ketan/google4', mode: '0777'}
+      - { dest: '/home/ketan/google5', mode: '0707'}
+      - { dest: '/home/ketan/google6', mode: '0575'}
+
+  - name: ansible create local directory example
+    local_action:
+      module: file
+      path: /tmp/local_file
+      state: directory
+
+  - name: ansible set permission recursvely for a directory
+    file:
+      path: "/tmp/devops_directory{{ansible_date_time.date}}"
+      state: directory
+      mode: "u=rw,g=wx,o=rwx"
+      recurse: yes
+
+  - name: ansible remove directory example
+    file:
+      path: /home/ketan/google
+      state: absent
