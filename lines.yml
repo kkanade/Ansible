@@ -1,0 +1,35 @@
+---
+
+- hosts: localhost
+  become: true
+  become_user: ketan
+  vars:
+    test: "This single line should be split based on white space"
+
+  tasks:
+
+  - name: to split all character in lines
+    debug:
+      msg: "{{ test.split() }}"
+
+- hosts: localhost
+  become: true
+  become_user: ketan
+  vars:
+    ip: "192.168.14.21"
+
+  tasks:
+  - name: To split all character on basis of special character
+    debug:
+      msg: "{{ ip.split('.') }}"
+
+- hosts: localhost
+  become: true
+  become_user: ketan
+  vars:
+    test: ['192','168','14','21']
+
+  tasks:
+  - name: concatenating all the string in the list
+    debug:
+      msg: "{{ test | join('.') }}"
