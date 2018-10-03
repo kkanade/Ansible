@@ -1,0 +1,39 @@
+---
+- hosts: localhost
+  become: true
+  become_user: root
+  tasks:
+  - name: Install a apt package in Ansible example
+    apt:
+      name: git
+      state: present
+
+  - name: Install latest yum package example.
+    apt:
+      name: git
+      state: latest
+
+  - name: Install specific version of a package in Ansible.
+    apt:
+      name: git-1.8.3.1-6.el7
+      state: present
+
+  - name: install multiple packages
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+    - git
+    - httpd
+    - mysql
+
+  - name: Upgrade all yum packages ansible.
+    apt:
+      name: "*"
+      state: latest
+
+  - name: Exclude some packages from upgrade in Ansible.
+    apt:
+      name: "*"
+      state: latest
+      exclude: git*
