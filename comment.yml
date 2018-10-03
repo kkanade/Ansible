@@ -1,0 +1,25 @@
+---
+
+- hosts: localhost
+  become: true
+  become_user: ketan
+
+  tasks:
+
+  - name: Exampel of commenting a line in Ansible.
+    replace:
+      dest: /home/ketan/ansible.txt
+      regexp: 'Hello Python'
+      replace: '#Hello Python'
+
+  - name: Commenting a line using the regualr expressions in Ansible.
+    replace:
+      dest: /home/ketan/ansible.txt
+      regexp: '(.*Kubernetes.*)'
+      replace: '#\1'
+
+  - name: Ansible delete file glob
+    replace:
+      dest: /home/ketan/ansible.txt
+      regexp: '^#(.*Python.*)'
+      replace: '\1'
