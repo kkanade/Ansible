@@ -42,3 +42,18 @@
     with_items:
     - { location: '/home/ketan/x.txt',mode: '0644'}
     - { location: '/home/ketan/y.txt',mode: '0755'}
+
+  - name: Ansible replace string example
+    replace:
+      dest: /home/ketan/ansible.txt
+      regexp: 'cat'
+      replace: "world"
+
+  - name: Ansible replace multiple words example
+    replace:
+      dest: /home/ketan/ansible.txt
+      regexp: "{{ item}}"
+      replace: "lion"
+    with_items:
+    - 'world'
+    - 'dog'
