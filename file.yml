@@ -57,3 +57,17 @@
     with_items:
     - 'world'
     - 'dog'
+
+  - name: Ansible multiple replace example
+    replace:
+      dest: "{{ item.dest }}"
+      regexp: "{{ item.regexp1 }}"
+      replace: "{{ item.replace }}"
+    with_items:
+      - { dest: '/home/ketan/ansible.txt', regexp1: 'lion', replace: 'chair'}
+      - { dest: '/home/ketan/ansible.txt', regexp1: 'tiger', replace: 'table'}
+
+  - name: Ansible remove words example
+    replace:
+      dest: "/home/ketan/ansible.txt"
+      regexp: "table"
