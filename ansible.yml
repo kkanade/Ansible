@@ -1,0 +1,44 @@
+---
+- hosts: localhost
+  become: true
+  become_user: ketan
+  tasks:
+  - name: Ansible create file if it doesn't exist example
+    file:
+      path: "/home/ketan/ansible.txt"
+      state: touch
+
+  - name: Ansible create file with content example
+    copy:
+      dest: "/home/ketan/ansible.txt"
+      content: |
+        cat
+        dog
+        tiger
+
+  - name: Ansible create new file with permissions example.
+    file:
+      path: "/home/ketan/ansible.txt"
+      state: touch
+      mode: 0777
+      owner: ketan
+
+  - name: Ansible create multiple files example
+    file:
+      path: "{{ item }}"
+      state: touch
+      mode: 0775
+    with_items:
+    - /home/ketan/a.txt
+    - /home/ketan/b.txt
+    - /home/ketan/c.txt
+    - /home/ketan/d.txt
+
+  - name: Ansible create multiple files example
+    file:
+      path: "{{ item.location }}"
+      state: touch
+      mode: "{{ item.mode }}"
+    with_items:
+    - { location: '/home/ketan/x.txt',mode: '0644'}
+    - { location: '/home/ketan/y.txt',mode: '0755'}
