@@ -1,0 +1,30 @@
+---
+
+- hosts: localhost
+  become: true
+  become_user: ketan
+
+  tasks:
+
+  - name: line insert
+    lineinfile:
+      dest: /home/ketan/ansible.txt
+      line: 'Hello Ansible'
+      insertbefore: BOF
+
+  - name: Insert a line at the end of a file.
+    lineinfile:
+      dest: /home/ketan/ansible.txt
+      line: 'Hello Python'
+
+  - name: Inserting a line after a pattern in Ansible example
+    lineinfile:
+      dest: /home/ketan/ansible.txt
+      line: 'Hello Docker'
+      insertafter: Python.*
+
+  - name: Ansible insert a line before example
+    lineinfile:
+      dest: /home/ketan/ansible.txt
+      line: 'Hello Kubernetes'
+      insertbefore: .*Docker
