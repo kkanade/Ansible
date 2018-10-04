@@ -1,0 +1,55 @@
+---
+
+- hosts: localhost
+  become: true
+  become_user: ketan
+  vars:
+    hello: world
+    location:
+      - World
+      - Asia
+      - South America
+      - North America
+      - Artic
+      - Antartic
+      - Oceania
+      - Europe
+      - Africa
+    map: [Asia, Americas, Artic, Antartic ,Oceania,Europe,Africa]
+    python:
+      Designer: 'Guido van Rosum'
+      Developer: 'Python Software Foundation'
+      OS: 'Cross-platform'
+
+  tasks:
+
+  - name: Ansible Basic Variable Example
+    debug:
+      msg: "{{ hello }}"
+
+  - name: Ansible List variable Example
+    debug:
+      msg: "{{ location[2] }}"
+
+  - name: Ansible array variables example
+    debug:
+      msg: "{{ item }}"
+    with_items:
+      - "{{ map }}"
+
+  - name: Ansible Dictionary Example
+    debug:
+      msg: "{{ python }}"
+
+  - name: Ansible Hash Example
+    debug:
+      msg: "{{python['Designer'] }}"
+
+  - name: Ansible Find Example
+    debug:
+      msg: "{{python.Designer }}"
+
+  - name: Ansible Dictionary variable Example
+    debug:
+      msg: "Key is {{ item.key}} and value is {{item.value}}"
+    with_dict: "{{ python }}"
