@@ -1,0 +1,53 @@
+---
+
+- hosts: localhost
+  become: true
+  become_user: ketan
+  vars:
+    test1: 8
+    test2: 6
+
+  tasks:
+
+  - stat:
+      path: /home/ketan/ansible.txt
+    register: result
+
+  - debug:
+      msg: "Ansible When File Exists Example."
+    when: result.stat.exists
+
+  - debug:
+      msg: "Ansible When File Not Present Example."
+    when: result.stat.exists == false
+
+  - name: Create a file in Ansible if it does not exist example
+    file:
+      path: /home/ketan/docker.txt
+      state: touch
+      mode: "u=rw,g=r,o=r"
+
+  - name: Create a directory in Ansible if it does not exist example
+    stat:
+      path: /home/ketan
+    register: result
+
+  - debug:
+      msg: "Ansible when directory exists example"
+    when: result.stat.exists == true and result.stat.isdir == true
+
+  - name: "Ansible command when example"
+    command: uptime
+    when: ansible_date_time.day == "04"
+
+  - debug:
+      msg: "Ansible when or example"
+    when: test1==5 or test1==6
+
+  - debug:
+      msg: "Ansible when or example"
+    when: test2==6 and test2==6
+
+  - debug:
+      msg: "This is the expected system"
+    when: ansible_distribution == "Ubuntu" and ansible_distribution_version == "16.04"
