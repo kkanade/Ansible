@@ -1,0 +1,38 @@
+---
+
+- hosts: localhost
+  become: true
+  become_user: ketan
+  vars:
+    test1: "Hello World"
+
+  tasks:
+
+  - name: Ansible when variable equals example
+    debug:
+      msg: "Equals"
+    when: test1 == "Hello World"
+
+  - name: Ansible when variable not equals example
+    debug:
+      msg: "Not Equals"
+    when: test1 != "Hello World"
+
+  - name: Ansible when variable contains string example
+    debug:
+      msg: "Equals"
+    when: test1.find("World") != -1
+
+  - shell: cat /etc/passwd
+    register: output
+  - name: Ansible when variable contains string example
+    debug:
+      msg: "Equals"
+    when: output.stdout.find("root") != -1
+
+  - shell: cat /etc/passwd
+    register: output
+  - name: Ansible when variable is empty example
+    debug:
+      msg: "empty"
+    when: output.stdout == ""
