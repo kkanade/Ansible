@@ -1,0 +1,93 @@
+---
+
+- hosts: localhost
+  become: true
+  become_user: ketan
+
+  tasks:
+
+  - name: Ansible copy file to remote server
+    copy:
+      src: /home/ketan/ansible.txt
+      dest: /tmp
+
+  - name: Ansible copy file force
+    copy:
+      src: /home/ketan/ansible.txt
+      dest: /tmp
+      force: no
+
+  - name: Ansible copy directory to the remote server
+    copy:
+      src: /home/ketan/google1
+      dest: /tmp
+
+  - name: Ansible copy directory to the remote server
+    copy:
+      src: /home/ketan/google1/
+      dest: /tmp
+
+  - name: Ansible copy files remote to remote
+    copy:
+      src: /tmp/demo.txt
+      dest: /home/ketan
+      remote_src: yes
+
+  - name: Ansible copy multiple files with_items
+    copy:
+      src: /home/ketan/{{item}}
+      dest: /tmp
+      mode: 0775
+    with_items:
+      ['a.txt','b.txt','c.txt']
+
+  - name: Copy multiple files in Ansible with different permissions
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      mode: "{{item.mode}}"
+    with_items:
+      - { src: '/home/ketan/x.txt',dest: '/tmp/demo', mode: '0775'}
+      - { src: '/home/ketan/y.txt',dest: '/tmp/demo', mode: '0664'}
+
+  - name: Ansible copy multiple files with wildcard matching.
+    copy:
+      src: "{{ item }}"
+      dest: /tmp
+    with_fileglob:
+      - /home/ketan/*.txt*
+
+  - name: ansible copy file backup example
+    copy:
+      src: /home/ketan/a.txt
+      dest: /tmp
+      backup: yes
+
+  - name: Ansible fetch files from remote server to the local machine using Ansible fetch module
+    fetch:
+      src: /home/ketan/ansible.txt
+      dest: /tmp/
+      mode: 0774
+
+  - name: Ansible fetch files from remote server to the local machine using Ansible fetch module
+    fetch:
+      src: /home/ketan/x.txt
+      dest: /tmp/
+      mode: 0774
+      flat: yes
+
+  - name: Ansible fetch files from remote server to the local machine using Ansible fetch module
+    fetch:
+      src: /home/ketan/ansible.txt
+      dest: /tmp/demo/
+      mode: 0774
+      flat: yes
+      fail_on_missing: yes
+
+  - name: Ansible write to a file example
+    copy:
+      content: |
+        Hello google Here!
+        How Can I Help You?
+      dest: /home/ketan/b.txt
+      backup: yes
