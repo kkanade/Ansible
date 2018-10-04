@@ -1,0 +1,32 @@
+---
+
+- hosts: localhost
+  become: true
+  become_user: ketan
+
+  tasks:
+
+  - name: Ansible zip file example
+    archive:
+      path: /home/ketan/ansible.txt
+
+  - name: Ansible zip file with path example
+    archive:
+      path: /home/ketan/ansible.txt
+      dest: /home/ketan/docker.zip
+      format: zip
+
+  - name: Ansible zip multiple files example
+    archive:
+      path:
+        - /home/ketan/a.txt
+        - /home/ketan/b.txt
+        - /home/ketan/c.txt
+      dest: /home/ketan/abcd.zip
+      format: zip
+
+  - name: Ansible zip directory example
+    archive:
+      path: /home/ketan/google1
+      dest: /home/ketan/GOOGLE.zip
+      format: zip
