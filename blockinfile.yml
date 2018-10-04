@@ -1,0 +1,74 @@
+---
+
+- hosts: localhost
+  become: true
+  become_user: ketan
+  vars:
+    var1: 'world'
+
+  tasks:
+
+  - name: Ansible Insert multiple lines using blockinfile
+    blockinfile:
+      dest: /home/ketan/ansible.txt
+      block: |
+        Hello Python
+        Hello Google, Git, GitHub, GitLab and Kubernetes
+      backup: yes
+
+  - name: Updating a line using Ansible blockinfile module
+    blockinfile:
+      dest: /home/ketan/ansible.txt
+      marker: <!-- {mark} Adding IP address -->
+      block: |
+        Hello Go Lang
+        Hello Ruby, Perl and Python
+
+  - name: Removing a line using blockinfile
+    blockinfile:
+      dest: /home/ketan/ansible.txt
+      marker: <!-- {mark} Adding IP address -->
+      state: absent
+
+  - name: Ansible blockinfile insertafter and insertbefore
+    blockinfile:
+      dest: /home/ketan/ansible.txt
+      block: |
+        Hello Java
+        Hello Oracle
+      insertbefore: "^Ruby"
+
+  - name: Ansible blockinfile variable example
+    blockinfile:
+      dest: /home/ketan/ansible.txt
+      marker: <!-- {mark} variable replace -->
+      block: |
+        hello {{ var1 }}
+
+  - name: Using Ansible blockinfile with_items
+    blockinfile:
+      dest: /home/ketan/ansible.txt
+      block: |
+        {{ item.name }} -- {{ item.line }}
+      marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+    with_items:
+      - { name: line1, line: hello1 }
+      - { name: line2, line: hello2 }
+      - { name: line3, line: hello3 }
+
+  - name: Using Ansible blockinfile with_items
+    blockinfile:
+      dest: /home/ketan/ansible.txt
+      block: |
+        {{ item.name }}
+      marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+    with_items:
+      - { name: Hello Ritesh }
+      - { name: Hello Balaji }
+      - { name: Hello Vinayak }
+
+  - name: Using Inserting contents from an external file
+    blockinfile:
+      dest: /home/ketan/ansible.txt
+      block: "{{ lookup('file', '/etc/hosts') }}"
+      marker: <!-- {mark} Adding external content -->
