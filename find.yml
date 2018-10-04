@@ -1,0 +1,112 @@
+---
+
+- hosts: localhost
+  become: true
+  become_user: ketan
+
+  tasks:
+
+  - name: Ansible find file examples
+    find:
+      paths: /home/ketan
+      patterns: "*.txt"
+      hidden: yes
+      recurse: yes
+    register: files_matched
+
+  - debug:
+      msg: "{{ files_matched.files }}"
+
+  - name: Ansible find file examples
+    find:
+      paths: /home/ketan
+      patterns: "*.txt"
+      hidden: yes
+      recurse: yes
+    register: files_matched
+
+  - debug:
+      msg: "{{ files_matched.files[0].path }}"
+
+  - name: Ansible find file examples
+    find:
+      paths: /home/ketan
+      patterns: "*.txt"
+      hidden: yes
+      recurse: yes
+    register: files_matched
+
+  - debug:
+      msg: "{{ files_matched.files[1].path }}"
+
+  - name: Ansible find files multiple patterns examples
+    find:
+      paths: /home/ketan
+      patterns: "*.txt,*.log"
+      recurse: yes
+      hidden: yes
+    register: files_matched
+
+  - debug:
+      msg: "{{ files_matched.files }}"
+
+  - name: Ansible find files older than 3 minutes
+    find:
+      paths: /home/ketan
+      age: "3m"
+    register: olderfiles
+
+  - debug:
+      msg: "{{ olderfiles.files }}"
+
+  - name: Ansible find files newer than 5 hours
+    find:
+      paths: /home/ketan
+      age: "-5h"
+    register: newerfiles
+
+  - debug:
+      msg: "{{ newerfiles.files }}"
+
+  - name: Ansible find files larger than 5 MB
+    find:
+      paths: /home/ketan
+      size: "5m"
+    register: largerfiles
+
+  - debug:
+      msg: "{{ largerfiles.files }}"
+
+  - name: Ansible find files smaller than 100 KB
+    find:
+      paths: /home/ketan
+      size: "-100k"
+    register: smallerfiles
+
+  - debug:
+      msg: "{{ smallerfiles.files }}"
+
+  - name: Ansible find directories older than 50 days
+    find:
+      paths: /home/ketan
+      age: "50d"
+      file_type: directory
+    register: directoryfiles
+
+  - debug:
+      msg: "{{ directoryfiles.files }}"
+
+  - name: Ansible delete files examples
+    find:
+      paths: /home/ketan
+      patterns: "*.log"
+      age: "100d"
+      hidden: yes
+      recurse: yes
+    register: files_to_delete
+
+  - name: Ansible delete file glob
+    file:
+      path: "{{ item.path }}"
+      state: absent
+    with_items: "{{ files_to_delete.files }}"
